@@ -1,20 +1,23 @@
 
 
 // Simple random number generator with seed
-// NOT IN ANY WAY SECURE OR UNIFORM
-export default class PerlinArray {
-    
+// NOT IN ANY WAY SECURE OR WELL DISTRIBUTED
+// This is a simple implementation of the park-miller PRNG
+// chosen solely for its simplicity
+export default class Random{
+    readonly maxValue: number = 2147483647;
+    readonly multiplier: number = 16807;
     seed: number;
+
     constructor(seed: number){
-        this.seed = seed % 2147483647;
-        if (this.seed <= 0) this.seed += 2147483646;
+        this.seed = seed % this.maxValue;
+        if (this.seed <= 0) this.seed += (this.maxValue -1);
     }
 
     // returns a value between 0 and 1
-    next(){
+    next = (): number => {
         // advance the generator
-        this.seed = this.seed * 16807 % 2147483647;
-        console.log((this.seed - 1) / 2147483646);
-        return (this.seed - 1) / 2147483646;
+        this.seed = this.seed * this.multiplier % this.maxValue;
+        return (this.seed - 1) / (this.maxValue - 1);
     }
 }
